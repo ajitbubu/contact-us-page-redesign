@@ -1,0 +1,179 @@
+<!-- =====================================================================
+     DataSafeguard — Contact page widgets for Webflow (HTML Embed elements)
+     Two self-contained, namespaced embeds. Paste each into its own
+     Webflow "Embed" element and position per the design.
+
+       EMBED 1  #dsg-avatar   — support video avatar + weekly-rotating name
+       EMBED 2  #dsg-offices   — "Visit an office" finder (tabs + contacts)
+
+     All styles are scoped under the embed's root id so they will not leak
+     into or clash with the site's Webflow styles. Colors are inlined from
+     the DataSafeguard design tokens. Replace https://cdn.prod.website-files.com/64c0210bf917ceeccb220ae8/6a3f34442233a5d381b73113_dsg-avatar-poster.jpg with the
+     uploaded poster asset URL.
+     ===================================================================== -->
+
+<!-- ============================ EMBED 1 ============================ -->
+<div id="dsg-avatar">
+  <style>
+    #dsg-avatar{display:flex;flex-direction:column;align-items:center;gap:12px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+    #dsg-avatar *{box-sizing:border-box}
+    #dsg-avatar .av{position:relative;width:150px;height:150px;cursor:pointer;-webkit-user-select:none;user-select:none}
+    #dsg-avatar .av-ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none;z-index:4;overflow:visible}
+    #dsg-avatar .av-ring-prog{stroke-dasharray:301.6;stroke-dashoffset:301.6;transition:stroke-dashoffset .12s linear}
+    #dsg-avatar .av-face{position:absolute;inset:6px;border-radius:50%;overflow:hidden;background:radial-gradient(125% 120% at 50% 18%,#eaf4ff 0%,#4f9bff 52%,#135fc6 100%);box-shadow:inset 0 -16px 30px rgba(9,35,57,.28),0 8px 22px rgba(9,35,57,.28);z-index:2}
+    #dsg-avatar .av-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+    #dsg-avatar .av-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5;background:radial-gradient(circle at center,rgba(8,28,48,.42) 0%,rgba(8,28,48,.18) 45%,rgba(8,28,48,.06) 100%)}
+    #dsg-avatar .av-pulse{position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.35);animation:dsg-av-pulse 2.1s ease-out infinite}
+    #dsg-avatar .av-btn{position:relative;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(9,35,57,.35)}
+    #dsg-avatar .av-btn svg{margin-left:2px}
+    #dsg-avatar .av-live{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:3px 8px;background:rgba(8,28,48,.72);border-radius:9999px;z-index:6}
+    #dsg-avatar .av-live-dot{width:6px;height:6px;border-radius:50%;background:#ff5a5a;animation:dsg-av-livedot 1s infinite}
+    #dsg-avatar .av-live-txt{font:700 9px Inter,sans-serif;letter-spacing:.08em;color:#fff}
+    #dsg-avatar .av .when-playing{display:none}
+    #dsg-avatar .av.is-playing .when-playing{display:block}
+    #dsg-avatar .av.is-playing .when-idle{display:none}
+    /* Dark text for a LIGHT background (the contact section). On a dark/blue
+       hero, change these to #fff (name) and rgba(255,255,255,.72) (tagline). */
+    #dsg-avatar .av-name{font:600 15px "Hanken Grotesk",Inter,sans-serif;color:#1e293b;text-align:center}
+    #dsg-avatar .av-tag{font:400 12px Inter,sans-serif;color:#64748b;text-align:center;margin-top:2px}
+    @keyframes dsg-av-pulse{0%{transform:scale(.9);opacity:.7}70%{transform:scale(1.5);opacity:0}100%{opacity:0}}
+    @keyframes dsg-av-livedot{0%,100%{opacity:1}50%{opacity:.25}}
+    @media (prefers-reduced-motion:reduce){#dsg-avatar .av-pulse,#dsg-avatar .av-live-dot{animation:none}}
+  </style>
+
+  <div class="av" id="dsgAv" role="button" tabindex="0" aria-label="Play support intro video">
+    <svg class="av-ring" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2.4"></circle>
+      <circle class="av-ring-prog" cx="50" cy="50" r="48" fill="none" stroke="#1cc279" stroke-width="2.8" stroke-linecap="round"></circle>
+    </svg>
+    <div class="av-face">
+      <video class="av-video" id="dsgAvVideo" src="https://dsg-chatbot.netlify.app/DataSafeguard-webflow_540.mp4" poster="https://cdn.prod.website-files.com/64c0210bf917ceeccb220ae8/6a3f34442233a5d381b73113_dsg-avatar-poster.jpg" preload="metadata" playsinline></video>
+      <div class="when-idle av-play">
+        <div class="av-pulse"></div>
+        <div class="av-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="#1a77f2"></path></svg></div>
+      </div>
+    </div>
+    <div class="when-playing av-live"><span class="av-live-dot"></span><span class="av-live-txt">LIVE</span></div>
+  </div>
+  <div>
+    <div class="av-name" id="dsgAvName">Swarnam</div>
+    <div class="av-tag">DSG is here to help you at all times!</div>
+  </div>
+
+  <script>
+  (function(){
+    var root=document.getElementById('dsg-avatar'); if(!root) return;
+    var av=root.querySelector('.av'), video=document.getElementById('dsgAvVideo'),
+        ring=root.querySelector('.av-ring-prog'), C=301.6;
+    function prog(p){ ring.style.strokeDashoffset=(C*(1-p)).toFixed(1); }
+    function play(){ if(av.classList.contains('is-playing'))return;
+      av.classList.add('is-playing'); av.setAttribute('aria-label','Stop support intro video');
+      var pr=video.play(); if(pr&&pr.catch)pr.catch(stop); }
+    function stop(){ av.classList.remove('is-playing'); av.setAttribute('aria-label','Play support intro video');
+      video.pause(); prog(0); try{ video.load(); }catch(e){} }
+    function toggle(){ av.classList.contains('is-playing')?stop():play(); }
+    video.addEventListener('timeupdate',function(){ if(video.duration) prog(video.currentTime/video.duration); });
+    video.addEventListener('ended',stop);
+    av.addEventListener('click',toggle);
+    av.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+
+    // Weekly-rotating support-agent name (flips each Monday, UTC).
+    var nameEl=document.getElementById('dsgAvName');
+    if(nameEl){
+      var NAMES=["Swarnam","Tedra","Mahi","Ritu"];
+      var WEEK=6048e5, anchor=Date.UTC(2024,0,1);
+      var w=Math.floor((Date.now()-anchor)/WEEK);
+      nameEl.textContent=NAMES[((w%NAMES.length)+NAMES.length)%NAMES.length];
+    }
+  })();
+  </script>
+</div>
+
+
+<!-- ============================ EMBED 2 ============================ -->
+<div id="dsg-offices">
+  <style>
+    #dsg-offices{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+    #dsg-offices *{box-sizing:border-box}
+    #dsg-offices .of-card{background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:24px;box-shadow:0 1px 4px rgba(9,35,57,.08);max-width:360px}
+    #dsg-offices .of-title{font:600 15px "Hanken Grotesk",Inter,sans-serif;color:#1e293b;margin-bottom:14px}
+    #dsg-offices .of-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    #dsg-offices .of-tab{height:36px;padding:0 16px;border-radius:8px;font:600 13px Inter,sans-serif;cursor:pointer;white-space:nowrap;background:#fff;color:#475569;border:1px solid #e4e7ec;transition:all .12s}
+    #dsg-offices .of-tab:hover{border-color:#cbd5e1;color:#1e293b}
+    #dsg-offices .of-tab.is-active{background:#1a77f2;color:#fff;border-color:#1a77f2}
+    #dsg-offices .of-list{display:flex;flex-direction:column;gap:10px}
+    #dsg-offices .of-office{background:#f8fafc;border:1px solid #e4e7ec;border-radius:12px;padding:18px}
+    #dsg-offices .of-office-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    #dsg-offices .of-office-label{font:600 14px Inter,sans-serif;color:#1e293b}
+    #dsg-offices .of-office-city{font:500 13px Inter,sans-serif;color:#1a77f2;margin-bottom:6px}
+    #dsg-offices .of-office-addr{font:400 13px/1.6 Inter,sans-serif;color:#475569}
+    #dsg-offices .of-divider{margin-top:20px;padding-top:20px;border-top:1px solid #e4e7ec}
+    #dsg-offices .of-label{font:600 12px Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#64748b;margin-bottom:12px}
+    #dsg-offices .of-contact{margin-bottom:10px}
+    #dsg-offices .of-role{font:500 12px Inter,sans-serif;color:#64748b}
+    #dsg-offices .of-email{font:600 13px Inter,sans-serif;color:#1a77f2;text-decoration:none}
+    #dsg-offices .of-email:hover{text-decoration:underline}
+    #dsg-offices .of-social{display:flex;gap:10px;margin-top:16px}
+    #dsg-offices .of-soc{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;text-decoration:none;background:#f1f5f9;color:#475569;transition:all .14s}
+    #dsg-offices .of-soc:hover{background:#1a77f2;color:#fff;transform:translateY(-2px)}
+  </style>
+
+  <div class="of-card">
+    <div class="of-title">Visit an office</div>
+    <div class="of-tabs" id="dsgOfTabs" role="tablist" aria-label="Office region">
+      <button class="of-tab is-active" type="button" data-tab="USA" role="tab" aria-selected="true">USA</button>
+      <button class="of-tab" type="button" data-tab="Canada" role="tab" aria-selected="false">Canada</button>
+      <button class="of-tab" type="button" data-tab="India" role="tab" aria-selected="false">India</button>
+      <button class="of-tab" type="button" data-tab="R&amp;D" role="tab" aria-selected="false">R&amp;D</button>
+    </div>
+    <div class="of-list" id="dsgOfList" aria-live="polite"></div>
+    <div class="of-divider">
+      <div class="of-label">Direct Contacts</div>
+      <div class="of-contact"><div class="of-role">Sales &amp; Marketing</div><a class="of-email" href="mailto:info@datasafeguard.ai">info@datasafeguard.ai</a></div>
+      <div class="of-contact"><div class="of-role">HR &mdash; India</div><a class="of-email" href="mailto:dmohanty@datasafeguard.ai">dmohanty@datasafeguard.ai</a></div>
+      <div class="of-contact"><div class="of-role">Operations &mdash; USA</div><a class="of-email" href="mailto:avijay@datasafeguard.ai">avijay@datasafeguard.ai</a></div>
+      <div class="of-social" aria-label="DataSafeguard on social media">
+        <a class="of-soc" href="#" aria-label="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.8-2.05 3.7-2.05 3.96 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21h-4z"/></svg></a>
+        <a class="of-soc" href="#" aria-label="Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13-2.43 0-4.1 1.48-4.1 4.2v2.34H7.4V13h2.5v8z"/></svg></a>
+        <a class="of-soc" href="#" aria-label="X"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.2l-7 8 8.2 10h-6.4l-5-6.1-5.7 6.1H1.6l7.5-8.6L1 3h6.6l4.5 5.6zm-1.1 16h1.8L7.7 4.8H5.8z"/></svg></a>
+        <a class="of-soc" href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.2a2.6 2.6 0 00-1.8-1.85C18.6 6 12 6 12 6s-6.6 0-8.2.35A2.6 2.6 0 002 8.2C1.65 9.8 1.65 12 1.65 12s0 2.2.35 3.8a2.6 2.6 0 001.8 1.85C5.4 18 12 18 12 18s6.6 0 8.2-.35A2.6 2.6 0 0022 15.8c.35-1.6.35-3.8.35-3.8s0-2.2-.35-3.8zM9.9 14.6V9.4l4.6 2.6z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var tabs=document.getElementById('dsgOfTabs'), list=document.getElementById('dsgOfList');
+    if(!tabs||!list) return;
+    var offices=[
+      {label:"Global Headquarters",city:"Santa Clara, USA",addr:"5201 Great America Pkwy, Suite 441, Santa Clara, CA 95054"},
+      {label:"India Headquarters",city:"Bangalore",addr:"No. 297, 1st Floor, 7th C Main, 35th Cross, 4th Block, Jayanagar, Bangalore 560011"},
+      {label:"Sales & Implementation",city:"Mumbai",addr:"#102, Umang Pravadevi CHS, P M Road, Vile Parle (East), Mumbai 400057"},
+      {label:"Implementation Center",city:"Pune",addr:"4th, Vascon Almonte IT Park, Chowk, Mundhwa – Kharadi Rd, near Radisson Blu, Rakshak Nagar, Kharadi, Pune, Maharashtra 411014, India"},
+      {label:"Innovation & R&D",city:"Bhubaneswar",addr:"2nd Floor, 42 Sachivalaya Marg, Madhusudan Nagar, Bhubaneswar 751001"},
+      {label:"Sales Office",city:"New Delhi",addr:"VAR House, A-84A/3, Paryavaran Complex, IGNOU Road, New Delhi – 110030"},
+      {label:"International",city:"Edmonton, Canada",addr:"Strathcona Business Park, 3907-98 St. Ste 110, Edmonton, AB T4E 6M3"}
+    ];
+    var regions={USA:[0],Canada:[6],India:[1,5,2],"R&D":[4]};
+    var PIN='<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z" stroke="#1a77f2" stroke-width="1.7"></path><circle cx="12" cy="10" r="2.4" stroke="#1a77f2" stroke-width="1.7"></circle></svg>';
+    function esc(s){ return String(s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+    function render(r){
+      var idx=regions[r]||[];
+      list.innerHTML=idx.map(function(i){ var o=offices[i];
+        return '<div class="of-office"><div class="of-office-head">'+PIN+
+          '<div class="of-office-label">'+esc(o.label)+'</div></div>'+
+          '<div class="of-office-city">'+esc(o.city)+'</div>'+
+          '<div class="of-office-addr">'+esc(o.addr)+'</div></div>';
+      }).join('');
+    }
+    tabs.addEventListener('click',function(e){
+      var b=e.target.closest('.of-tab'); if(!b)return;
+      tabs.querySelectorAll('.of-tab').forEach(function(t){
+        var a=t===b; t.classList.toggle('is-active',a); t.setAttribute('aria-selected',a?'true':'false');
+      });
+      render(b.dataset.tab);
+    });
+    render('USA');
+  })();
+  </script>
+</div>

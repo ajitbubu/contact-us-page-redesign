@@ -1,0 +1,174 @@
+/* ============================================================
+   DataSafeguard — Design Tokens
+   Merged from the DataSafeguard design system:
+   fonts.css + colors.css + typography.css + spacing.css.
+   These are the single source of truth consumed by main.css.
+   ============================================================ */
+
+/* -- Webfonts -----------------------------------------------
+   Larsseit (brand display, commercial) is substituted with
+   Hanken Grotesk. Inter is the UI/body face. Replace with the
+   licensed Larsseit @font-face files for production fidelity.
+   ---------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* ---- Brand Blue (primary) — #1a77f2 = brand-blue-500 ---- */
+  --brand-blue-50:  hsl(215 90% 96%);
+  --brand-blue-100: hsl(212 91% 92%);
+  --brand-blue-200: hsl(211 89% 82%);
+  --brand-blue-300: hsl(210 89% 72%);
+  --brand-blue-400: hsl(211 89% 63%);
+  --brand-blue-500: hsl(214 89% 53%);   /* #1a77f2 — core brand */
+  --brand-blue-600: hsl(214 81% 44%);
+  --brand-blue-700: hsl(215 82% 35%);
+  --brand-blue-800: hsl(215 83% 25%);
+  --brand-blue-900: hsl(216 84% 17%);
+
+  /* ---- Brand Navy (app chrome) ---- */
+  --navy-950: #061826;
+  --navy-900: #092339;
+  --navy-800: #112437;
+  --navy-700: #0f1729;
+  --navy-600: #1a3550;
+  --navy-500: #2a3547;
+
+  /* ---- Slate / Gray neutral scale ---- */
+  --gray-50:  hsl(210 20% 98%);   /* #f8fafc */
+  --gray-100: hsl(220 14% 96%);
+  --gray-200: hsl(220 13% 91%);   /* #e4e7ec hairlines */
+  --gray-300: hsl(216 12% 84%);
+  --gray-400: hsl(218 11% 65%);
+  --gray-500: hsl(220 9% 46%);    /* #64748b muted text */
+  --gray-600: hsl(215 14% 34%);
+  --gray-700: hsl(217 19% 27%);
+  --gray-800: hsl(215 28% 17%);   /* #1e293b */
+  --gray-900: hsl(221 39% 11%);
+  --gray-950: hsl(224 71% 4%);
+  --white: #ffffff;
+  --black: #000000;
+
+  /* ---- Green (success) ---- */
+  --green-50:  hsl(138 76% 97%);
+  --green-100: hsl(141 84% 93%);
+  --green-200: hsl(141 79% 85%);
+  --green-300: hsl(142 77% 73%);
+  --green-400: hsl(142 69% 58%);
+  --green-500: hsl(142 71% 45%);
+  --green-600: hsl(142 76% 36%);
+  --green-700: hsl(142 72% 29%);
+  --green-800: hsl(143 64% 24%);
+  --green-900: hsl(144 61% 20%);
+  --success:   #1cc279;
+  --login-green: #148018;
+
+  /* ---- Red (destructive) ---- */
+  --red-50:  hsl(0 86% 97%);
+  --red-100: hsl(0 93% 94%);
+  --red-200: hsl(0 96% 89%);
+  --red-300: hsl(0 94% 82%);
+  --red-400: hsl(0 91% 71%);
+  --red-500: hsl(0 84% 60%);
+  --red-600: hsl(0 72% 51%);
+  --red-700: hsl(0 74% 42%);
+  --red-800: hsl(0 70% 35%);
+  --red-900: hsl(0 63% 31%);
+  --danger:  #e94141;
+
+  /* ---- Yellow / Amber (warning) ---- */
+  --yellow-50:  hsl(55 92% 95%);
+  --yellow-500: hsl(45 93% 47%);
+  --yellow-800: hsl(32 81% 29%);
+  --warning: #fdbd5b;
+
+  /* ===========================================================
+     SEMANTIC ALIASES — the layer UI code consumes.
+     =========================================================== */
+
+  /* Surfaces */
+  --surface-app:      var(--gray-50);
+  --surface-card:     var(--white);
+  --surface-raised:   var(--white);
+  --surface-sunken:   var(--gray-100);
+  --surface-sidebar:  var(--navy-900);
+  --surface-inverse:  var(--navy-900);
+
+  /* Text */
+  --text-primary:   var(--gray-800);
+  --text-secondary: var(--gray-600);
+  --text-muted:     var(--gray-500);
+  --text-disabled:  var(--gray-400);
+  --text-inverse:   var(--white);
+  --text-link:      var(--brand-blue-500);
+  --text-brand:     var(--brand-blue-500);
+
+  /* Brand */
+  --brand:            var(--brand-blue-500);
+  --brand-hover:      var(--brand-blue-600);
+  --brand-active:     var(--brand-blue-700);
+  --brand-subtle:     var(--brand-blue-50);
+  --brand-subtle-fg:  var(--brand-blue-700);
+
+  /* Borders */
+  --border:        var(--gray-200);
+  --border-strong: var(--gray-300);
+  --border-focus:  var(--brand-blue-400);
+  --input-border:  var(--gray-300);
+
+  /* Status (semantic) */
+  --status-success:        var(--success);
+  --status-success-subtle: var(--green-50);
+  --status-success-fg:     var(--green-700);
+  --status-danger:         var(--danger);
+  --status-danger-subtle:  var(--red-50);
+  --status-danger-fg:      var(--red-700);
+  --status-warning:        var(--warning);
+  --status-info:           var(--brand-blue-500);
+  --status-info-subtle:    var(--brand-blue-50);
+  --status-info-fg:        var(--brand-blue-700);
+
+  /* Focus ring */
+  --ring: var(--brand-blue-400);
+
+  /* ---- Typography ---- */
+  --font-display: "Hanken Grotesk", "Larsseit", system-ui, sans-serif;
+  --font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ---- Radius ---- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ---- Elevation ---- */
+  --shadow-xs: 0 1px 2px rgba(9, 35, 57, 0.06);
+  --shadow-sm: 0 1px 4px rgba(9, 35, 57, 0.08);
+  --shadow-md: 0 4px 12px rgba(9, 35, 57, 0.10);
+  --shadow-lg: 0 8px 24px rgba(9, 35, 57, 0.12);
+  --shadow-xl: 0 16px 40px rgba(9, 35, 57, 0.16);
+  --shadow-focus: 0 0 0 3px rgba(26, 119, 242, 0.20);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast:   120ms;
+  --duration-normal: 200ms;
+  --duration-slow:   320ms;
+}

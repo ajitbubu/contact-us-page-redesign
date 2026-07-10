@@ -1,0 +1,9 @@
+# gstack browse working dir (transient)
+.gstack/
+
+# QA artifacts
+.qa-*.png
+
+# OS / editor
+.DS_Store
+Thumbs.db
