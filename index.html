@@ -77,10 +77,9 @@
           </div>
         </div>
 
-        <!-- COMMENTED OUT: Original hero avatar — using floating video widget instead -->
-        <!--
         <div class="hero__avatar">
           <div class="hero__avatar-ring">
+            <!-- Animated support avatar — click to play a 9-second intro -->
             <div class="avatar" id="avatar" role="button" tabindex="0" aria-label="Play support intro video">
               <svg class="avatar__ring" viewBox="0 0 100 100" aria-hidden="true">
                 <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2.4"></circle>
@@ -93,6 +92,7 @@
                   src="https://dsg-chatbot.netlify.app/DataSafeguard-webflow_540.mp4" poster="assets/avatar-poster.jpg"
                   preload="metadata" playsinline></video>
 
+                <!-- idle-only: play affordance -->
                 <div class="avatar__when-idle avatar__play">
                   <div class="avatar__play-pulse"></div>
                   <div class="avatar__play-btn">
@@ -103,6 +103,7 @@
                 </div>
               </div>
 
+              <!-- playing-only: LIVE badge -->
               <div class="avatar__when-playing avatar__live">
                 <span class="avatar__live-dot"></span>
                 <span class="avatar__live-text">LIVE</span>
@@ -114,7 +115,6 @@
             <div class="hero__avatar-tagline">DSG is here to help you at all times!</div>
           </div>
         </div>
-        -->
       </div>
     </section>
 
