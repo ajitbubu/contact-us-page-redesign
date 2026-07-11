@@ -175,12 +175,18 @@ class VideoWidget {
   }
 
   markClosed() {
-    // Store in localStorage so widget doesn't reappear on page refresh
+    // Store in sessionStorage - widget will reappear after page refresh
     sessionStorage.setItem(this.storageKey, 'true');
   }
 
   isClosed() {
+    // Check if closed in current session only
     return sessionStorage.getItem(this.storageKey) === 'true';
+  }
+
+  // Clear closed state on page load (so it always shows when user comes back)
+  static clearClosedState(storageKey) {
+    sessionStorage.removeItem(storageKey);
   }
 
   // Public methods
@@ -214,6 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const poster = videoWidget.dataset.videoPoster || null;
     const title = videoWidget.dataset.videoTitle || 'Video';
     const storageKey = videoWidget.dataset.storageKey || 'video-widget-closed';
+
+    // Clear closed state so widget always shows on fresh page load
+    sessionStorage.removeItem(storageKey);
 
     if (videoSrc) {
       new VideoWidget({
