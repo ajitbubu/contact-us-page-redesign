@@ -16,7 +16,7 @@ This floating video widget displays a video in the bottom-left corner of the pag
 .video-widget {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
   width: 320px;
   max-width: calc(100% - 40px);
   background: #000;
